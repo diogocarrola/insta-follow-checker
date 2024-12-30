@@ -1,0 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=Proxima+Nova:wght@400;700&display=swap');
+
+body {
+    font-family: 'Proxima Nova', Arial, sans-serif;
+    background: url('https://img.freepik.com/free-photo/vivid-blurred-colorful-wallpaper-background_58702-2422.jpg?t=st=1735516979~exp=1735520579~hmac=b19cf051aa410c5a89ffacb28d4fe8af00fb2ca0279413c161784346604ab205&w=996') no-repeat center center fixed;
+    background-size: cover;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 50px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 90%;
+    max-width: 1000px;
+    max-height: 80%;
+    overflow-y: auto;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 2em;
+}
+
+input[type="file"] {
+    margin: 20px 0;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #333;
+    font-family: 'Proxima Nova', Arial, sans-serif;
+    font-size: 1em;
+}
+
+button {
+    background-color: #bc2a8d;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-family: 'Proxima Nova', Arial, sans-serif;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #8a3ab9;
+}
+
+h2 {
+    color: #333;
+    margin-top: 20px;
+    font-size: 1.5em;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    background: #fff;
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+}
