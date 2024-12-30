@@ -2,8 +2,9 @@
 
 body {
     font-family: 'Proxima Nova', Arial, sans-serif;
-    background: url('https://img.freepik.com/free-photo/vivid-blurred-colorful-wallpaper-background_58702-2422.jpg?t=st=1735516979~exp=1735520579~hmac=b19cf051aa410c5a89ffacb28d4fe8af00fb2ca0279413c161784346604ab205&w=996') no-repeat center center fixed;
-    background-size: cover;
+    background: linear-gradient(45deg, #405DE6, #5B51D8, #833AB4, #C13584, #E1306C, #FD1D1D, #F56040, #FCAF45, #FFDC80);
+    background-size: 1800% 1800%;
+    animation: gradient 10s ease infinite;
     color: #333;
     margin: 0;
     padding: 0;
@@ -11,29 +12,44 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    overflow: hidden;
+}
+
+@keyframes gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 .container {
     background: rgba(255, 255, 255, 0.9);
-    padding: 50px;
+    padding: 20px;
     border-radius: 12px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     text-align: center;
     width: 90%;
-    max-width: 1000px;
+    max-width: 600px;
     max-height: 80%;
     overflow-y: auto;
+    position: relative;
+    z-index: 1;
 }
 
 h1 {
     color: #333;
     margin-bottom: 20px;
-    font-size: 2em;
+    font-size: 1.5em;
+}
+
+.header {
+    color: #666;
+    margin-bottom: 20px;
+    font-size: 1.2em;
 }
 
 input[type="file"] {
     margin: 20px 0;
-    padding: 15px;
+    padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #fff;
@@ -46,7 +62,7 @@ button {
     background-color: #bc2a8d;
     color: white;
     border: none;
-    padding: 15px 30px;
+    padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
     margin-top: 10px;
@@ -62,7 +78,7 @@ button:hover {
 h2 {
     color: #333;
     margin-top: 20px;
-    font-size: 1.5em;
+    font-size: 1.2em;
 }
 
 ul {
@@ -77,4 +93,26 @@ li {
     border-radius: 5px;
     border: 1px solid #ccc;
     font-size: 1em;
+    display: flex;
+    align-items: center;
+}
+
+.profile-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.profile-link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.profile-link:hover {
+    text-decoration: underline;
 }
