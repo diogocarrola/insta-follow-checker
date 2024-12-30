@@ -9,6 +9,7 @@
 <body>
     <div class="container">
         <h1>Instagram Follower Checker</h1>
+        <p class="header">Simple, secure and helpful. Discover who is not following you back.</p>
         <input type="file" id="fileInput" webkitdirectory directory multiple required>
         <button onclick="checkFollowers()">Check</button>
         <h2>Users who do not follow back:</h2>
@@ -16,7 +17,40 @@
     </div>
 
     <script>
-        function checkFollowers() {
+        const colors = [
+            '#405DE6', // Blue
+            '#5B51D8', // Purple
+            '#833AB4', // Dark Pink
+            '#C13584', // Purple-Red
+            '#E1306C', // Red
+            '#FD1D1D', // Dark Orange
+            '#F56040', // Orange
+            '#FCAF45', // Light Yellow
+            '#FFDC80'  // Yellow
+        ];
+
+        function generateProfileImage(username, color) {
+            const firstLetter = username.charAt(0).toUpperCase();
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            canvas.width = 40;
+            canvas.height = 40;
+
+            // Draw background
+            context.fillStyle = color;
+            context.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw text
+            context.fillStyle = '#FFFFFF';
+            context.font = '20px Arial';
+            context.textAlign = 'center';
+            context.textBaseline = 'middle';
+            context.fillText(firstLetter, canvas.width / 2, canvas.height / 2);
+
+            return canvas.toDataURL();
+        }
+
+        async function checkFollowers() {
             const fileInput = document.getElementById('fileInput');
             const files = fileInput.files;
             if (files.length === 0) {
@@ -43,7 +77,7 @@
             const followersReader = new FileReader();
             const followingReader = new FileReader();
 
-            followersReader.onload = function(event) {
+            followersReader.onload = async function(event) {
                 console.log('Followers file loaded');
                 try {
                     const followersData = JSON.parse(event.target.result);
@@ -51,7 +85,7 @@
                     const followers = new Set(followersData.map(user => user.string_list_data[0].value));
                     console.log('Followers:', followers);
 
-                    followingReader.onload = function(event) {
+                    followingReader.onload = async function(event) {
                         console.log('Following file loaded');
                         try {
                             const followingData = JSON.parse(event.target.result).relationships_following;
@@ -63,9 +97,16 @@
 
                             const resultsList = document.getElementById('results');
                             resultsList.innerHTML = '';
-                            notFollowingBack.forEach(user => {
+                            notFollowingBack.forEach((user, index) => {
+                                const color = colors[index % colors.length];
+                                const profileLink = `https://www.instagram.com/${user}/`;
+                                const profilePictureUrl = generateProfileImage(user, color);
                                 const listItem = document.createElement('li');
-                                listItem.textContent = user;
+                                listItem.innerHTML = `
+                                    <a href="${profileLink}" target="_blank" class="profile-link">
+                                        <img src="${profilePictureUrl}" alt="${user}'s profile picture" class="profile-pic">
+                                        ${user}
+                                    </a>`;
                                 resultsList.appendChild(listItem);
                             });
                         } catch (e) {
