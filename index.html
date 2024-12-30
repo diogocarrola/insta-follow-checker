@@ -48,15 +48,15 @@
                 try {
                     const followersData = JSON.parse(event.target.result);
                     console.log('Parsed followers data:', followersData);
-                    const followers = new Set(followersData.map(user => user.username));
+                    const followers = new Set(followersData.map(user => user.string_list_data[0].value));
                     console.log('Followers:', followers);
 
                     followingReader.onload = function(event) {
                         console.log('Following file loaded');
                         try {
-                            const followingData = JSON.parse(event.target.result);
+                            const followingData = JSON.parse(event.target.result).relationships_following;
                             console.log('Parsed following data:', followingData);
-                            const following = new Set(followingData.map(user => user.username));
+                            const following = new Set(followingData.map(user => user.string_list_data[0].value));
                             console.log('Following:', following);
                             const notFollowingBack = [...following].filter(user => !followers.has(user));
                             console.log('Not following back:', notFollowingBack);
