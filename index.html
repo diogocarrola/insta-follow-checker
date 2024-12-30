@@ -9,7 +9,7 @@
 <body>
     <div class="container">
         <h1>Instagram Follower Checker</h1>
-        <input type="file" id="fileInput" accept=".json" required>
+        <input type="file" id="fileInput" webkitdirectory directory multiple required>
         <button onclick="checkFollowers()">Check</button>
         <h2>Users who do not follow back:</h2>
         <ul id="results"></ul>
@@ -18,28 +18,70 @@
     <script>
         function checkFollowers() {
             const fileInput = document.getElementById('fileInput');
-            const file = fileInput.files[0];
-            if (!file) {
-                alert('Please upload a JSON file.');
+            const files = fileInput.files;
+            if (files.length === 0) {
+                alert('Please upload a directory containing the JSON files.');
                 return;
             }
 
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const data = JSON.parse(event.target.result);
-                const followers = new Set(data.followers);
-                const following = new Set(data.following);
-                const notFollowingBack = [...following].filter(user => !followers.has(user));
+            let followersFile = null;
+            let followingFile = null;
 
-                const resultsList = document.getElementById('results');
-                resultsList.innerHTML = '';
-                notFollowingBack.forEach(user => {
-                    const listItem = document.createElement('li');
-                    listItem.textContent = user;
-                    resultsList.appendChild(listItem);
-                });
+            for (let i = 0; i < files.length; i++) {
+                if (files[i].name === 'followers.json') {
+                    followersFile = files[i];
+                } else if (files[i].name === 'following.json') {
+                    followingFile = files[i];
+                }
+            }
+
+            if (!followersFile || !followingFile) {
+                alert('Please ensure the directory contains both followers.json and following.json files.');
+                return;
+            }
+
+            const followersReader = new FileReader();
+            const followingReader = new FileReader();
+
+            followersReader.onload = function(event) {
+                console.log('Followers file loaded');
+                try {
+                    const followersData = JSON.parse(event.target.result);
+                    console.log('Parsed followers data:', followersData);
+                    const followers = new Set(followersData.map(user => user.username));
+                    console.log('Followers:', followers);
+
+                    followingReader.onload = function(event) {
+                        console.log('Following file loaded');
+                        try {
+                            const followingData = JSON.parse(event.target.result);
+                            console.log('Parsed following data:', followingData);
+                            const following = new Set(followingData.map(user => user.username));
+                            console.log('Following:', following);
+                            const notFollowingBack = [...following].filter(user => !followers.has(user));
+                            console.log('Not following back:', notFollowingBack);
+
+                            const resultsList = document.getElementById('results');
+                            resultsList.innerHTML = '';
+                            notFollowingBack.forEach(user => {
+                                const listItem = document.createElement('li');
+                                listItem.textContent = user;
+                                resultsList.appendChild(listItem);
+                            });
+                        } catch (e) {
+                            console.error('Error parsing following.json:', e);
+                            alert('Error parsing following.json');
+                        }
+                    };
+
+                    followingReader.readAsText(followingFile);
+                } catch (e) {
+                    console.error('Error parsing followers.json:', e);
+                    alert('Error parsing followers.json');
+                }
             };
-            reader.readAsText(file);
+
+            followersReader.readAsText(followersFile);
         }
     </script>
 </body>
