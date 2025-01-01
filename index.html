@@ -12,8 +12,9 @@
         <p class="header">Simple, secure and helpful. Discover who is not following you back.</p>
         <input type="file" id="fileInput" webkitdirectory directory multiple required>
         <button onclick="checkFollowers()">Check</button>
-        <h2>Users who do not follow back:</h2>
+        <h2>Users who do not follow back: <span id="userCount">0</span></h2>
         <ul id="results"></ul>
+        <p><a href="https://github.com/diogocarrola/insta-follow-checker#readme" target="_blank">View Steps</a></p>
     </div>
 
     <footer>
@@ -74,7 +75,7 @@
             }
 
             if (!followersFile || !followingFile) {
-                alert('Please ensure the directory contains both followers.json and following.json files.');
+                alert('Please ensure the directory contains both followers and following JSON files.');
                 return;
             }
 
@@ -113,16 +114,19 @@
                                     </a>`;
                                 resultsList.appendChild(listItem);
                             });
+
+                            // Update the user count
+                            document.getElementById('userCount').innerText = notFollowingBack.length;
                         } catch (e) {
-                            console.error('Error parsing following.json:', e);
-                            alert('Error parsing following.json');
+                            console.error('Error parsing following JSON:', e);
+                            alert('Error parsing following JSON');
                         }
                     };
 
                     followingReader.readAsText(followingFile);
                 } catch (e) {
-                    console.error('Error parsing followers.json:', e);
-                    alert('Error parsing followers.json');
+                    console.error('Error parsing followers JSON:', e);
+                    alert('Error parsing followers JSON');
                 }
             };
 
