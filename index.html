@@ -66,9 +66,9 @@
             let followingFile = null;
 
             for (let i = 0; i < files.length; i++) {
-                if (files[i].name === 'followers.json') {
+                if (files[i].name.startsWith('followers')) {
                     followersFile = files[i];
-                } else if (files[i].name === 'following.json') {
+                } else if (files[i].name.startsWith('following')) {
                     followingFile = files[i];
                 }
             }
