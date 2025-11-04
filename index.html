@@ -87,11 +87,7 @@
                 try {
                     const followersData = JSON.parse(event.target.result);
                     console.log('Parsed followers data:', followersData);
-                    const followers = new Set(
-                        followersData
-                            .map(user => user.string_list_data[0].value)
-                            .filter(username => username && username !== 'undefined')
-                    );
+                    const followers = new Set(followersData.map(user => user.string_list_data[0].value));
                     console.log('Followers:', followers);
 
                     followingReader.onload = async function(event) {
@@ -99,11 +95,7 @@
                         try {
                             const followingData = JSON.parse(event.target.result).relationships_following;
                             console.log('Parsed following data:', followingData);
-                            const following = new Set(
-                                followingData
-                                    .map(user => user.title)
-                                    .filter(username => username && username !== 'undefined')
-                            );
+                            const following = new Set(followingData.map(user => user.title));
                             console.log('Following:', following);
                             const notFollowingBack = [...following].filter(user => !followers.has(user));
                             console.log('Not following back:', notFollowingBack);
