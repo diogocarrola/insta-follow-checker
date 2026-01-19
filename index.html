@@ -10,7 +10,7 @@
     <div class="container">
         <h1>Instagram Follower Checker</h1>
         <p class="header">Simple, secure and helpful. Discover who is not following you back.</p>
-        <input type="file" id="fileInput" webkitdirectory directory multiple required>
+        <input type="file" id="fileInput" multiple accept=".json" required>
         <button onclick="checkFollowers()">Check</button>
         <h2>Users who do not follow back: <span id="userCount">0</span></h2>
         <ul id="results"></ul>
@@ -59,7 +59,7 @@
             const fileInput = document.getElementById('fileInput');
             const files = fileInput.files;
             if (files.length === 0) {
-                alert('Please upload a directory containing the JSON files.');
+                alert('Please select the followers and following JSON files.');
                 return;
             }
 
@@ -67,15 +67,15 @@
             let followingFile = null;
 
             for (let i = 0; i < files.length; i++) {
-                if (files[i].name.startsWith('followers')) {
+                if (files[i].name.includes('followers')) {
                     followersFile = files[i];
-                } else if (files[i].name.startsWith('following')) {
+                } else if (files[i].name.includes('following')) {
                     followingFile = files[i];
                 }
             }
 
             if (!followersFile || !followingFile) {
-                alert('Please ensure the directory contains both followers and following JSON files.');
+                alert('Please ensure you have selected both followers and following JSON files.');
                 return;
             }
 
