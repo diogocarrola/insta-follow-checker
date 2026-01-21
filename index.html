@@ -85,17 +85,37 @@
             followersReader.onload = async function(event) {
                 console.log('Followers file loaded');
                 try {
-                    const followersData = JSON.parse(event.target.result);
+                    let followersData = JSON.parse(event.target.result);
                     console.log('Parsed followers data:', followersData);
-                    const followers = new Set(followersData.map(user => user.string_list_data[0].value));
+                    let followersArray;
+                    if (Array.isArray(followersData)) {
+                        followersArray = followersData;
+                    } else if (followersData.followers) {
+                        followersArray = followersData.followers;
+                    } else {
+                        alert('Unknown followers JSON structure. Please check the file.');
+                        return;
+                    }
+                    const followers = new Set(followersArray.map(user => user.string_list_data[0].value));
                     console.log('Followers:', followers);
 
                     followingReader.onload = async function(event) {
                         console.log('Following file loaded');
                         try {
-                            const followingData = JSON.parse(event.target.result).relationships_following;
+                            let followingData = JSON.parse(event.target.result);
                             console.log('Parsed following data:', followingData);
-                            const following = new Set(followingData.map(user => user.title));
+                            let followingArray;
+                            if (followingData.relationships_following) {
+                                followingArray = followingData.relationships_following;
+                            } else if (Array.isArray(followingData)) {
+                                followingArray = followingData;
+                            } else if (followingData.following) {
+                                followingArray = followingData.following;
+                            } else {
+                                alert('Unknown following JSON structure. Please check the file.');
+                                return;
+                            }
+                            const following = new Set(followingArray.map(user => user.title || user.string_list_data[0].value));
                             console.log('Following:', following);
                             const notFollowingBack = [...following].filter(user => !followers.has(user));
                             console.log('Not following back:', notFollowingBack);
