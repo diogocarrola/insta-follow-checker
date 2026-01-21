@@ -92,12 +92,21 @@
                         followersArray = followersData;
                     } else if (followersData.followers) {
                         followersArray = followersData.followers;
+                    } else if (followersData.relationships_followers) {
+                        followersArray = followersData.relationships_followers;
+                    } else if (followersData.data) {
+                        followersArray = followersData.data;
                     } else {
-                        alert('Unknown followers JSON structure. Please check the file.');
+                        console.error('Unknown followers JSON structure:', followersData);
+                        alert('Unknown followers JSON structure. Please check the console for details.');
                         return;
                     }
-                    const followers = new Set(followersArray.map(user => user.string_list_data[0].value));
+                    const followers = new Set(followersArray.map(user => user.title || user.string_list_data[0].value));
                     console.log('Followers:', followers);
+                    if (followers.size === 0) {
+                        alert('No followers parsed. Check the followers JSON file structure in the console.');
+                        return;
+                    }
 
                     followingReader.onload = async function(event) {
                         console.log('Following file loaded');
@@ -111,12 +120,18 @@
                                 followingArray = followingData;
                             } else if (followingData.following) {
                                 followingArray = followingData.following;
+                            } else if (followingData.data) {
+                                followingArray = followingData.data;
                             } else {
                                 alert('Unknown following JSON structure. Please check the file.');
                                 return;
                             }
                             const following = new Set(followingArray.map(user => user.title || user.string_list_data[0].value));
                             console.log('Following:', following);
+                            if (following.size === 0) {
+                                alert('No following parsed. Check the following JSON file structure in the console.');
+                                return;
+                            }
                             const notFollowingBack = [...following].filter(user => !followers.has(user));
                             console.log('Not following back:', notFollowingBack);
 
